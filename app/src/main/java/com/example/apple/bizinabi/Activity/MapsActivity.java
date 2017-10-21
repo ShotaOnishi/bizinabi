@@ -1,27 +1,20 @@
-package com.example.apple.bizinabi;
+package com.example.apple.bizinabi.Activity;
 
-import android.*;
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.PermissionChecker;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.apple.bizinabi.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,60 +22,39 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import static android.content.Context.LOCATION_SERVICE;
-
 /**
  * Created by apple on 2017/10/21.
  */
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, LocationListener {
-    private final static String BACKGROUND_COLOR = "background_color";
+public class MapsActivity extends FragmentActivity
+        implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, LocationListener {
 
     private static final int MY_LOCATION_REQUEST_CODE = 1000;
     private GoogleMap mMap;
     private LocationManager myLocationManager;
 
-    public static MapFragment newInstance(@ColorRes int IdRes) {
-        MapFragment frag = new MapFragment();
-        Bundle b = new Bundle();
-        b.putInt(BACKGROUND_COLOR, IdRes);
-        frag.setArguments(b);
-        return frag;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_map, null);
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.fragmet_map);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
+        setContentView(R.layout.activity_maps);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-//        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-        linearLayout.setBackgroundResource(getArguments().getInt(BACKGROUND_COLOR));
-        return view;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if (PermissionChecker.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            myLocationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
+            myLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             String provider = getProvider();
             Location lastLocation = myLocationManager.getLastKnownLocation(provider);
             if(lastLocation != null) {
                 setLocation(lastLocation);
             }
             mMap.setMyLocationEnabled(true);
-            Toast.makeText(getContext(), "Provider=" + provider, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Provider=" + provider, Toast.LENGTH_SHORT).show();
             myLocationManager.requestLocationUpdates(provider, 0, 0, this);
         } else {
             setDefaultLocation();
@@ -101,20 +73,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
             // 現在位置の取得はrequestLocationUpdatesを実行する必要がありますが、パーミッションチェックをやれとエラーが出ます。
             // そこで、このメソッドに到達した時点ではすでにパーミッションが許可/拒否されていますので、引数でなくとも
             // heckSelfPermissionを実行すればエラーも解消されますし良いかなと思って、以下のようにしています。
-            if (PermissionChecker.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+            if (PermissionChecker.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 mMap.setMyLocationEnabled(true);
-                myLocationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+                myLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                 myLocationManager.requestLocationUpdates(getProvider(), 0, 0, this);
             } else {
-                Toast.makeText(getContext(), "権限を取得できませんでした。", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "権限を取得できませんでした。", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(getContext(), "LocationChanged実行" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "LocationChanged実行" , Toast.LENGTH_SHORT).show();
         setLocation(location);
         try {
             myLocationManager.removeUpdates(this);
@@ -123,45 +95,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
+    public void onStatusChanged(String s, int i, Bundle bundle) {
     }
 
     @Override
-    public void onProviderEnabled(String provider) {
-
+    public void onProviderEnabled(String s) {
     }
 
     @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    private String getProvider() {
-        Criteria criteria = new Criteria();
-        return myLocationManager.getBestProvider(criteria, true);
-    }
-
-    private void confirmPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-            new AlertDialog.Builder(getContext()).setTitle("パーミッション説明")
-                    .setMessage("このアプリを実行するには位置情報の権限を与えてやる必要です。よろしくお願い致します。")
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // trueもfalseも結局同じrequestPermissionsを実行しているので一つにまとめるべきかも
-                            ActivityCompat.requestPermissions(getActivity(),
-                                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                                    MY_LOCATION_REQUEST_CODE);
-                        }
-                    })
-                    .create()
-                    .show();
-        } else {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_LOCATION_REQUEST_CODE);
-        }
+    public void onProviderDisabled(String s) {
     }
 
     @Override
@@ -176,6 +118,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
         }
     }
 
+    private String getProvider() {
+        Criteria criteria = new Criteria();
+        return myLocationManager.getBestProvider(criteria, true);
+    }
+
+    private void confirmPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            new AlertDialog.Builder(this).setTitle("パーミッション説明")
+                    .setMessage("このアプリを実行するには位置情報の権限を与えてやる必要です。よろしくお願い致します。")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // trueもfalseも結局同じrequestPermissionsを実行しているので一つにまとめるべきかも
+                            ActivityCompat.requestPermissions(MapsActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    MY_LOCATION_REQUEST_CODE);
+                        }
+                    })
+                    .create()
+                    .show();
+        } else {
+            ActivityCompat.requestPermissions(MapsActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_LOCATION_REQUEST_CODE);
+        }
+    }
 
     private void setDefaultLocation() {
         LatLng tokyo = new LatLng(35.681298, 139.766247);
@@ -186,9 +154,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
         LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.addMarker(new MarkerOptions().position(myLocation).title("now Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18));
-        SharedPreferences data = getActivity().getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = data.edit();
-        editor.putString("Location",myLocation.toString());
-        editor.apply();
     }
 }
