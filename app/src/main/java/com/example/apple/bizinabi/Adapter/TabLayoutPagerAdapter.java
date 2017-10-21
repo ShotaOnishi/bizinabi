@@ -37,6 +37,14 @@ public class TabLayoutPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "ページ" + (position + 1);
+        switch (position) {
+            case 0:
+                return "Bijinマップ";
+            case 1:
+                return "Bijin発見";
+            case 2:
+                return "Bijinランキング";
+        }
+        return null;
     }
 }

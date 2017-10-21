@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 
 import com.example.apple.bizinabi.Adapter.RankingFragmentAdapter;
 import com.example.apple.bizinabi.Model.Area;
 import com.example.apple.bizinabi.R;
+import com.example.apple.bizinabi.Utils.NumberComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by apple on 2017/10/21.
@@ -46,14 +49,15 @@ public class RankingFragment extends Fragment {
         ArrayList<Area> list = new ArrayList<>();
         RankingFragmentAdapter adapter = new RankingFragmentAdapter(getContext());
 
-        list.add(new Area(1, "石川", 100));
-        list.add(new Area(2, "東京", 20));
-        list.add(new Area(3, "大阪", 30));
-        list.add(new Area(4, "京都", 40));
-        list.add(new Area(5, "福井", 50));
-        list.add(new Area(6, "富山", 60));
+        list.add(new Area(1, "兼六園", 108));
+        list.add(new Area(2, "金沢城公園", 37));
+        list.add(new Area(3, "金沢駅", 64));
+        list.add(new Area(4, "金沢中央郵便局", 75));
+        list.add(new Area(5, "尾崎神社", 7));
+        list.add(new Area(6, "尾山神社", 180));
 
         adapter.notifyDataSetChanged();
+        Collections.sort(list, new NumberComparator());
         adapter.setAreaList(list);
         listView.setAdapter(adapter);
 
