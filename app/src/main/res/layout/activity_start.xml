@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,12 +10,36 @@
         android:layout_height="0dp"
         android:background="@color/colorPrimaryDark">
 
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:padding="10dp"
+            android:scaleType="fitStart"
+            app:srcCompat="@drawable/title" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.50"
+
+            android:background="#00000000"
+            android:padding="20dp"
+            android:scaleType="fitEnd"
+            app:aspectRatio="1.0"
+            app:srcCompat="@drawable/start_button" />
+
+        <Button
+            android:id="@+id/start_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.50"
+            android:text="はじめる"
+            android:visibility="gone" />
+
     </FrameLayout>
-    <Button
-        android:id="@+id/start_button"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        android:text="start"/>
+
 </LinearLayout>
 </layout>
