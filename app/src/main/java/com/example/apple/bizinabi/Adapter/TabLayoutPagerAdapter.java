@@ -1,15 +1,19 @@
-package com.example.apple.bizinabi;
+package com.example.apple.bizinabi.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.apple.bizinabi.Activity.FindFragment;
+import com.example.apple.bizinabi.Activity.MapFragment;
+import com.example.apple.bizinabi.Activity.RankingFragment;
+
 /**
  * Created by apple on 2017/10/21.
  */
 
-public class ExampleFragmentPagerAdapter extends FragmentPagerAdapter {
-    public ExampleFragmentPagerAdapter(FragmentManager fm) {
+public class TabLayoutPagerAdapter extends FragmentPagerAdapter {
+    public TabLayoutPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -17,11 +21,11 @@ public class ExampleFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return MapFragment.newInstance(android.R.color.holo_green_light);
+                return MapFragment.newInstance(android.R.color.transparent);
             case 1:
-                return FindFragment.newInstance(android.R.color.holo_blue_bright);
+                return FindFragment.newInstance(android.R.color.transparent);
             case 2:
-                return RankingFragment.newInstance(android.R.color.holo_red_dark);
+                return RankingFragment.newInstance(android.R.color.transparent);
         }
         return null;
     }

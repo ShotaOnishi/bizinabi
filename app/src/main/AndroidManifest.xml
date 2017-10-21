@@ -20,28 +20,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:label="Main"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
-            android:name=".MapsActivity"
+            android:name=".Activity.MapsActivity"
             android:label="Map"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
-            android:name=".MyLocationDemoActivity"
+            android:name=".Activity.MyLocationDemoActivity"
             android:label="MyLocationDemo"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".StartActivity">
+            android:name=".Activity.StartActivity">
 
         </activity>
         <activity
-            android:name=".TabActivity"
+            android:name=".Activity.TabActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Tab">
             <intent-filter>

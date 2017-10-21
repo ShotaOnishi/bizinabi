@@ -1,4 +1,4 @@
-package com.example.apple.bizinabi;
+package com.example.apple.bizinabi.Activity;
 
 /**
  * Created by apple on 2017/10/21.
@@ -14,6 +14,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import com.example.apple.bizinabi.R;
 
 /**
  * Utility class for access to runtime permissions.
