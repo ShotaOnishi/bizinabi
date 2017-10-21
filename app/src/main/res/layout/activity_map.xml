@@ -20,6 +20,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/map" />
+
     <include layout="@layout/content_main" />
 
     <android.support.design.widget.FloatingActionButton
