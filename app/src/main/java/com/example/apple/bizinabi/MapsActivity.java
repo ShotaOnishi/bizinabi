@@ -147,7 +147,7 @@ public class MapsActivity extends FragmentActivity
 
     private void setDefaultLocation() {
         LatLng tokyo = new LatLng(35.681298, 139.766247);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tokyo, 18));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tokyo, 10));
     }
 
     private void setLocation(Location location) {

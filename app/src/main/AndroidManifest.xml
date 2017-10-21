@@ -29,11 +29,7 @@
             android:name=".MapsActivity"
             android:label="Map"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MyLocationDemoActivity"
@@ -47,8 +43,13 @@
         <activity
             android:name=".TabActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="Tab"
-            />
+            android:label="Tab">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!--<meta-data-->
             <!--android:name="com.google.android.gms.version"-->
             <!--android:value="@integer/google_play_services_version" />-->
