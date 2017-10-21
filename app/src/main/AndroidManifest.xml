@@ -38,17 +38,17 @@
         </activity>
         <activity
             android:name=".Activity.StartActivity">
-
-        </activity>
-        <activity
-            android:name=".Activity.TabActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="Tab">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activity.TabActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Tab">
+
         </activity>
         <!--<meta-data-->
             <!--android:name="com.google.android.gms.version"-->
