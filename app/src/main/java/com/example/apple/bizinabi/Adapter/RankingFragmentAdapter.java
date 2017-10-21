@@ -51,7 +51,7 @@ public class RankingFragmentAdapter extends BaseAdapter{
 
         ((TextView)convertView.findViewById(R.id.rank)).setText(String.valueOf(position+1) + "位");
         ((TextView)convertView.findViewById(R.id.name)).setText(areaList.get(position).getName());
-        ((TextView)convertView.findViewById(R.id.num)).setText(String.valueOf(areaList.get(position).getNumber()));
+        ((TextView)convertView.findViewById(R.id.num)).setText(String.valueOf(areaList.get(position).getNumber() + "人"));
 
         return convertView;
     }

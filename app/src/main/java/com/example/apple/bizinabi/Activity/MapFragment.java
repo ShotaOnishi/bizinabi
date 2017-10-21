@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -84,6 +85,46 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
             mMap.setMyLocationEnabled(true);
             Toast.makeText(getContext(), "Provider=" + provider, Toast.LENGTH_SHORT).show();
             myLocationManager.requestLocationUpdates(provider, 0, 0, this);
+
+            //美人スポットにピンを立てる処理
+            LatLng kanazwaw_station = new LatLng(36.578057, 136.64866);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(kanazwaw_station)
+                    .title("this is Bijin Spot!")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+            LatLng kenrokuenn = new LatLng(36.562128, 136.662652);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(kenrokuenn)
+                    .title("This is Bijin Spot!")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+            LatLng ohmityo_itiba = new LatLng(36.565689, 136.6597);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(ohmityo_itiba)
+                    .title("This is Bijin Spot!")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+            LatLng kanazawa_center_post_office = new LatLng(36.571332, 136.645497);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(kanazawa_center_post_office)
+                    .title("This is Bijin Spot!")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+            LatLng oyama_shrine = new LatLng(36.566073, 136.655425);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(oyama_shrine)
+                    .title("This is Bijin Spot!")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+            LatLng ozaki_shrine = new LatLng(36.569233, 136.657471);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(ozaki_shrine)
+                    .title("This is Bijin Spot!")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+
+
         } else {
             setDefaultLocation();
             confirmPermission();
@@ -185,7 +226,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
     private void setLocation(Location location) {
         LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.addMarker(new MarkerOptions().position(myLocation).title("now Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 14));
         SharedPreferences data = getActivity().getSharedPreferences("DataSave", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = data.edit();
         editor.putString("Location",myLocation.toString());

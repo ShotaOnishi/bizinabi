@@ -26,17 +26,6 @@
 
         </activity>
         <activity
-            android:name=".Activity.MapsActivity"
-            android:label="Map"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".Activity.MyLocationDemoActivity"
-            android:label="MyLocationDemo"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".Activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
