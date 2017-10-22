@@ -15,6 +15,7 @@ import android.support.annotation.ColorRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.PermissionChecker;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.nifty.cloud.mb.core.DoneCallback;
+import com.nifty.cloud.mb.core.NCMBException;
+import com.nifty.cloud.mb.core.NCMBObject;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -79,7 +83,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
             myLocationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
             String provider = getProvider();
             Location lastLocation = myLocationManager.getLastKnownLocation(provider);
-            if(lastLocation != null) {
+            if (lastLocation != null) {
                 setLocation(lastLocation);
             }
             mMap.setMyLocationEnabled(true);
@@ -125,7 +129,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
 
-
         } else {
             setDefaultLocation();
             confirmPermission();
@@ -156,11 +159,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(getContext(), "LocationChanged実行" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "LocationChanged実行", Toast.LENGTH_SHORT).show();
         setLocation(location);
         try {
             myLocationManager.removeUpdates(this);
-        } catch(SecurityException e) {
+        } catch (SecurityException e) {
         }
     }
 
@@ -211,7 +214,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
         super.onDestroy();
         try {
             myLocationManager.removeUpdates(this);
-        } catch(SecurityException e) {
+        } catch (SecurityException e) {
             // removeUpdatesを使用する場合もパーミッションチェックをするか、このようにSecurityExceptionをキャッチする対応が必要です。
             // onRequestPermissionsResultでパーミッションチェックを例にしたのでこちらはSecurityExceptionで対応します。
             // 何もしてませんが、本当は例外に応じた後続処理を書く必要があります。
@@ -230,7 +233,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 14));
         SharedPreferences data = getActivity().getSharedPreferences("DataSave", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = data.edit();
-        editor.putString("Location",myLocation.toString());
+        editor.putString("Location_latitude", String.valueOf(myLocation.latitude));
+        editor.putString("Location_longitude", String.valueOf(myLocation.longitude));
         editor.apply();
+
     }
 }
