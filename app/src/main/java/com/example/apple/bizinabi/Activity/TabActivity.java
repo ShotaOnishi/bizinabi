@@ -14,8 +14,10 @@ import com.example.apple.bizinabi.R;
  * Created by apple on 2017/10/21.
  */
 
-public class TabActivity extends AppCompatActivity{
+public class TabActivity extends AppCompatActivity implements FindFragment.OnPageChangeListener {
     private Toolbar toolbar;
+    private ViewPager viewPager;
+    private TabLayoutPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +30,22 @@ public class TabActivity extends AppCompatActivity{
         toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         FragmentManager manager = getSupportFragmentManager();
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        TabLayoutPagerAdapter adapter = new TabLayoutPagerAdapter(manager);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        adapter = new TabLayoutPagerAdapter(manager);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public void onChange(int index) {
+        //Fragmentから呼ばれる
+        //ページのフラグメントを全て削除し再セット
+        ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager);
+        adapter.destroyAllItem(viewPager);
+        adapter.notifyDataSetChanged();
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(index);
+
     }
 }
