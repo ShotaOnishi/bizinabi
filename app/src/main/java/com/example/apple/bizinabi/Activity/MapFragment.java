@@ -31,8 +31,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nifty.cloud.mb.core.DoneCallback;
+import com.nifty.cloud.mb.core.FindCallback;
 import com.nifty.cloud.mb.core.NCMBException;
 import com.nifty.cloud.mb.core.NCMBObject;
+import com.nifty.cloud.mb.core.NCMBQuery;
+
+import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -96,37 +100,39 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
                     .position(kanazwaw_station)
                     .title("This is Bijin Spot!")
                     .snippet("可愛い 15人\n美人 40人\n着物 30人")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
             LatLng kenrokuenn = new LatLng(36.562128, 136.662652);
             googleMap.addMarker(new MarkerOptions()
                     .position(kenrokuenn)
                     .title("This is Bijin Spot!")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
             LatLng ohmityo_itiba = new LatLng(36.565689, 136.6597);
             googleMap.addMarker(new MarkerOptions()
                     .position(ohmityo_itiba)
                     .title("This is Bijin Spot!")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
             LatLng kanazawa_center_post_office = new LatLng(36.571332, 136.645497);
             googleMap.addMarker(new MarkerOptions()
                     .position(kanazawa_center_post_office)
                     .title("This is Bijin Spot!")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
             LatLng oyama_shrine = new LatLng(36.566073, 136.655425);
             googleMap.addMarker(new MarkerOptions()
                     .position(oyama_shrine)
                     .title("This is Bijin Spot!")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
             LatLng ozaki_shrine = new LatLng(36.569233, 136.657471);
             googleMap.addMarker(new MarkerOptions()
                     .position(ozaki_shrine)
                     .title("This is Bijin Spot!")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+
+            getGeoData();
 
 
         } else {
@@ -169,7 +175,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
     }
 
     @Override
@@ -229,7 +234,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
 
     private void setLocation(Location location) {
         LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(myLocation).title("now Location"));
+//        mMap.addMarker(new MarkerOptions().position(myLocation).title("now Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 14));
         SharedPreferences data = getActivity().getSharedPreferences("DataSave", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = data.edit();
@@ -237,5 +242,53 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
         editor.putString("Location_longitude", String.valueOf(myLocation.longitude));
         editor.apply();
 
+    }
+
+
+    public void getGeoData(){
+        NCMBQuery<NCMBObject> query = new NCMBQuery<>("Spot");
+        Location southwest = new Location("location");
+        southwest.setLatitude(20.2531);
+        southwest.setLongitude(122.5601);
+        Location northeast = new Location("location");
+        northeast.setLatitude(45.3326);
+        northeast.setLongitude(153.5911);
+        query.whereWithinGeoBox("geo", southwest, northeast);
+        query.findInBackground(new FindCallback<NCMBObject>() {
+            @Override
+            public void done(List<NCMBObject> results, NCMBException e) {
+                if (e != null) {
+                    //検索失敗時の処理
+                } else {
+                    //検索成功時の処理
+                    for(NCMBObject spot : results) {
+                        // Type取得
+                        Log.d("Main", "type:" + spot.getInt("type"));
+                        // 緯度軽度取得
+                        Location geo = spot.getGeolocation("geo");
+                        Log.d("Main", geo.getLatitude() + " " + geo.getLongitude());
+                        float coror = 0;
+                        switch (spot.getInt("type")){
+                            case 0:
+                                coror = BitmapDescriptorFactory.HUE_BLUE;
+                                break;
+                            case 1:
+                                coror = BitmapDescriptorFactory.HUE_RED;
+                                break;
+                            case 2:
+                                coror = BitmapDescriptorFactory.HUE_GREEN;
+                                break;
+                        }
+
+                        LatLng ozaki_shrine = new LatLng(geo.getLatitude(), geo.getLongitude());
+                        mMap.addMarker(new MarkerOptions()
+                                .position(ozaki_shrine)
+                                .title("This is Saved Spot!")
+                                .icon(BitmapDescriptorFactory.defaultMarker(coror)));
+
+                    }
+                }
+            }
+        });
     }
 }

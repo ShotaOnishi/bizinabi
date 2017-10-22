@@ -1,11 +1,13 @@
 package com.example.apple.bizinabi.Activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +32,11 @@ import java.util.List;
 
 public class FindFragment extends Fragment {
     private final static String BACKGROUND_COLOR = "background_color";
+
+    public interface OnPageChangeListener {
+        void onChange(int index);
+    }
+
 
     public static FindFragment newInstance(@ColorRes int IdRes) {
         FindFragment frag = new FindFragment();
@@ -58,16 +65,17 @@ public class FindFragment extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 SharedPreferences data = getContext().getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-                String location_latitude = data.getString("Location_latitude","nothing" );
-                String location_longitude = data.getString("Location_longitude","nothing" );
+                String location_latitude = data.getString("Location_latitude", "nothing");
+                String location_longitude = data.getString("Location_longitude", "nothing");
                 double latitude = Double.valueOf(location_latitude);
                 double longitude = Double.valueOf(location_longitude);
                 Location location = new Location("location");
                 location.setLatitude(latitude);
                 location.setLongitude(longitude);
                 saveLocation(location, 0);
-                builder.setMessage(location_latitude);
+                builder.setMessage("可愛いスポット登録完了！");
                 builder.show();
+                refresh();
             }
         });
 
@@ -78,16 +86,18 @@ public class FindFragment extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 SharedPreferences data = getContext().getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-                String location_latitude = data.getString("Location_latitude","nothing" );
-                String location_longitude = data.getString("Location_longitude","nothing" );
+                String location_latitude = data.getString("Location_latitude", "nothing");
+                String location_longitude = data.getString("Location_longitude", "nothing");
                 double latitude = Double.valueOf(location_latitude);
                 double longitude = Double.valueOf(location_longitude);
                 Location location = new Location("location");
                 location.setLatitude(latitude);
                 location.setLongitude(longitude);
                 saveLocation(location, 1);
-                builder.setMessage(location_latitude);
+                builder.setMessage("大人スポット登録完了！");
                 builder.show();
+                refresh();
+
 
             }
         });
@@ -99,16 +109,17 @@ public class FindFragment extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 SharedPreferences data = getContext().getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-                String location_latitude = data.getString("Location_latitude","nothing" );
-                String location_longitude = data.getString("Location_longitude","nothing" );
+                String location_latitude = data.getString("Location_latitude", "nothing");
+                String location_longitude = data.getString("Location_longitude", "nothing");
                 double latitude = Double.valueOf(location_latitude);
                 double longitude = Double.valueOf(location_longitude);
                 Location location = new Location("location");
                 location.setLatitude(latitude);
                 location.setLongitude(longitude);
                 saveLocation(location, 2);
-                builder.setMessage(location_latitude);
+                builder.setMessage("着物スポット登録完了！");
                 builder.show();
+                refresh();
 
             }
         });
@@ -116,35 +127,8 @@ public class FindFragment extends Fragment {
         return view;
     }
 
-    public void checkGeo(){
-        NCMBQuery<NCMBObject> query = new NCMBQuery<>("Spot");
-        Location southwest = new Location("location");
-        southwest.setLatitude(20.2531);
-        southwest.setLongitude(122.5601);
-        Location northeast = new Location("location");
-        northeast.setLatitude(45.3326);
-        northeast.setLongitude(153.5911);
-        query.whereWithinGeoBox("geo", southwest, northeast);
-        query.findInBackground(new FindCallback<NCMBObject>() {
-            @Override
-            public void done(List<NCMBObject> results, NCMBException e) {
-                if (e != null) {
-                    //検索失敗時の処理
-                } else {
-                    //検索成功時の処理
-                    for(NCMBObject spot : results) {
-                        // Type取得
-                        Log.d("Main", "type:" + spot.getInt("type"));
-                        // 緯度軽度取得
-                        Location geo = spot.getGeolocation("geo");
-                        Log.d("Main", geo.getLatitude() + " " + geo.getLongitude());
-                    }
-                }
-            }
-        });
-    }
 
-    public void saveLocation(Location location, final int type){
+    public void saveLocation(Location location, final int type) {
         //位置情報の登録
         //Location geo = new Location("location");
 
@@ -166,4 +150,17 @@ public class FindFragment extends Fragment {
             }
         });
     }
+
+    public void refresh(){
+
+        Bundle bundle = getArguments();
+        int index = bundle.getInt("INDEX");
+        Activity activity = getActivity();
+        if(activity instanceof OnPageChangeListener == false){
+            return;
+        }
+        ((OnPageChangeListener)activity).onChange(index);
+    }
+
 }
+
