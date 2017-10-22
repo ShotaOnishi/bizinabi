@@ -90,7 +90,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Activit
             LatLng kanazwaw_station = new LatLng(36.578057, 136.64866);
             googleMap.addMarker(new MarkerOptions()
                     .position(kanazwaw_station)
-                    .title("this is Bijin Spot!")
+                    .title("This is Bijin Spot!")
+                    .snippet("可愛い 15人\n美人 40人\n着物 30人")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
             LatLng kenrokuenn = new LatLng(36.562128, 136.662652);

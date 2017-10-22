@@ -41,8 +41,33 @@ public class FindFragment extends Fragment {
         LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.fragmet_find);
         linearLayout.setBackgroundResource(getArguments().getInt(BACKGROUND_COLOR));
 
-        Button findButton = (Button) view.findViewById(R.id.find_button);
-        findButton.setOnClickListener(new View.OnClickListener() {
+        Button cuteFindButton = (Button) view.findViewById(R.id.cute_find_button);
+        cuteFindButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                SharedPreferences data = getContext().getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+                String location = data.getString("Location","nothing" );
+                builder.setMessage(location);
+                builder.show();
+            }
+        });
+
+        Button beautyFindButton = (Button) view.findViewById(R.id.beauty_find_button);
+        beautyFindButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                SharedPreferences data = getContext().getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+                String location = data.getString("Location","nothing" );
+                builder.setMessage(location);
+                builder.show();
+
+            }
+        });
+
+        Button kimonoFindButton = (Button) view.findViewById(R.id.kimono_find_button);
+        kimonoFindButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
