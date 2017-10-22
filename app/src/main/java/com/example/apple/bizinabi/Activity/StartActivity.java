@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.apple.bizinabi.R;
+import com.nifty.cloud.mb.core.NCMB;
 
 
 /**
@@ -20,6 +21,8 @@ public class StartActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        NCMB.initialize(this.getApplicationContext(),"c627d792fb6024d4e751895717030b9834b1095dd30a2f4151c42f4f925fa72c","95d95b41f49a7088ec991e6c5da12408e72db60dd1c337fd87f9666a238fd584");
 
         ImageButton startButton = (ImageButton)findViewById(R.id.start_button);
 
